@@ -11,7 +11,7 @@ const companyRoutes = require('./routes/companies');
 const dashboardRoutes = require('./routes/dashboard');
 const { User } = require('./models/associations');
 const bcrypt = require('bcryptjs');
-const port = 3000;
+const port = process.env.PORT || 3000;
 const app = express();
 app.use(express.json()); // Middleware to parse JSON bodies
 app.use(cors()); // Use cors middleware
