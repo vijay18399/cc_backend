@@ -4,6 +4,7 @@ const { Op } = require('sequelize');
 const auth = require('../middleware/auth');
 const { User, Profile, Experience, Skill, Company, UserSkill, Portfolio } = require('../models/associations');
 const path = require('path'); // Import path module
+const fs = require('fs');
 const sequelize = require('../database');
 
 // GET /api/users
@@ -282,7 +283,11 @@ const resumeParser = require('../utility/resume-parser');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../uploads/resumes/')) // Use path.join to create a robust path
+    const uploadPath = path.join(__dirname, '../../uploads/resumes/');
+    if (!fs.existsSync(uploadPath)) {
+      fs.mkdirSync(uploadPath, { recursive: true });
+    }
+    cb(null, uploadPath);
   },
   filename: function (req, file, cb) {
     // Save as [rollNumber].pdf, overwriting any existing file for this user
